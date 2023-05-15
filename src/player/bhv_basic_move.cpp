@@ -114,11 +114,38 @@ Bhv_BasicMove::execute( PlayerAgent * agent )
     if ( wm.kickableOpponent()
          && wm.ball().distFromSelf() < 18.0 )
     {
-        agent->setNeckAction( new Neck_TurnToBall() ); 
+        agent->setNeckAction( new Neck_TurnToBall() );
+        
     }
     else
     {
         agent->setNeckAction( new Neck_TurnToBallOrScan( 0 ) );
+        return true;
+    }
+
+    const PlayerObject *nearest_opp;
+
+    const Vector2D nearest_opp_pos = (nearest_opp ? nearest_opp->pos() : Vector2D(-1000, 0));
+
+    const double nearest_opp_dist = (nearest_opp ? nearest_opp->distFromSelf() : 1000);
+
+    const double closest_teammate_dist = (wm.getDistTeammateNearestTo(nearest_opp_pos, 0));
+
+    if(nearest_opp_dist < 5.0 && nearest_opp_dist < closest_teammate_dist) {
+        if (wm.kickableOpponent() == nearest_opp) {
+            Vector2D final_point = nearest_opp_pos;
+            agent->debugClient().setTarget(final_point);
+            
+            dlog.addText( Logger::INTERCEPT,
+                      __FILE__": no solution... Just go to ball end point (%.2f %.2f)",
+                      final_point.x, final_point.y );
+            agent->debugClient().addMessage( "InterceptNoSolution" );
+            Body_GoToPoint( final_point,
+                            2.0,
+                            ServerParam::i().maxDashPower()
+                            ).execute( agent );
+            return true;
+        }
     }
 
     return true;
