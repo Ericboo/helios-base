@@ -71,23 +71,23 @@ Bhv_BasicMove::execute( PlayerAgent * agent )
     const WorldModel & wm = agent->world();
     /*--------------------------------------------------------*/
     // chase ball
-    const int self_min = wm.interceptTable().selfStep();
-    const int mate_min = wm.interceptTable().teammateStep();
-    const int opp_min = wm.interceptTable().opponentStep();
-
-    if ( ! wm.kickableTeammate()
+    const int self_min = wm.interceptTable().selfStep();//Quantidade de passos para alacançar a bola
+    const int mate_min = wm.interceptTable().teammateStep();//Qtd de passos para o colega mais próximo da bola
+    const int opp_min = wm.interceptTable().opponentStep();//Qtd de passos para o oponente mais próximo da bola
+     
+    if ( ! wm.kickableTeammate()//Se existe um jogador para receber um passe (eu acho)
          && ( self_min <= 3
               || ( self_min <= mate_min
                    && self_min < opp_min + 3 )
               )
          )
-    {
+    {//Intercepta a bola se eu estiver <= 3 passos ou não tiver um oponente com + de 3 passos de proximidade (pra mim faltam 5 pra ele faltam 2) e não tem um colega mais próximo que eu
         dlog.addText( Logger::TEAM,
                       __FILE__": intercept" );
         Body_Intercept().execute( agent );
         agent->setNeckAction( new Neck_OffensiveInterceptNeck() );
 
-        return true;
+        return true;//Finaliza a execução para quando é possível interceptar a bola
     }
 
     const Vector2D target_point = Strategy::i().getPosition( wm.self().unum() );
@@ -114,7 +114,7 @@ Bhv_BasicMove::execute( PlayerAgent * agent )
     if ( wm.kickableOpponent()
          && wm.ball().distFromSelf() < 18.0 )
     {
-        agent->setNeckAction( new Neck_TurnToBall() );
+        agent->setNeckAction( new Neck_TurnToBall() ); 
     }
     else
     {

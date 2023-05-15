@@ -4,4 +4,4 @@ sample_player
 sample_trainer
 start.sh
 train.sh
-
+*.o
