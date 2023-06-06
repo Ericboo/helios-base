@@ -58,6 +58,7 @@ using namespace rcsc;
 bool
 Bhv_BasicMove::execute( PlayerAgent * agent )
 {
+    
     dlog.addText( Logger::TEAM,
                   __FILE__": Bhv_BasicMove" );
 
@@ -75,7 +76,7 @@ Bhv_BasicMove::execute( PlayerAgent * agent )
     const int mate_min = wm.interceptTable().teammateStep();//Qtd de passos para o colega mais próximo da bola
     const int opp_min = wm.interceptTable().opponentStep();//Qtd de passos para o oponente mais próximo da bola
      
-    if ( ! wm.kickableTeammate()//Se existe um jogador para receber um passe (eu acho)
+    if ( ! wm.kickableTeammate()//Se não existe um jogador para receber um passe (eu acho)
          && ( self_min <= 3
               || ( self_min <= mate_min
                    && self_min < opp_min + 3 )

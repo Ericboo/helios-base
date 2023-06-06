@@ -408,7 +408,8 @@ SampleCoach::doFirstSubstitute()
     //
     // change field players
     //
-
+	const std::vector<int> ids = {15, 10, 11, 4, 5, 8, 16, 1, 14, 7, 9, 6, 12, 13, 3, 2, 17};
+    int count = 0;
     for ( std::vector< int >::iterator unum = ordered_unum.begin();
           unum != ordered_unum.end();
           ++unum )
@@ -424,12 +425,10 @@ SampleCoach::doFirstSubstitute()
                           *unum );
             continue;
         }
-
-        int type = getFastestType( candidates );
-        if ( type != Hetero_Unknown )
-        {
-            substituteTo( *unum, type );
-        }
+ 
+        substituteTo( *unum, ids[count] );
+        count++;
+    
     }
 }
 
