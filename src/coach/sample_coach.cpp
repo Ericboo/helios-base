@@ -408,7 +408,7 @@ SampleCoach::doFirstSubstitute()
     //
     // change field players
     //
-	const std::vector<int> ids = {15, 10, 11, 4, 5, 8, 16, 1, 14, 7, 9, 6, 12, 13, 3, 2, 17};
+	const std::vector<int> ids = {7, 16, 17, 13, 1, 2, 14, 10, 3, 9, 12, 8, 4, 11, 15, 6, 5};
     int count = 0;
     for ( std::vector< int >::iterator unum = ordered_unum.begin();
           unum != ordered_unum.end();
@@ -476,6 +476,7 @@ SampleCoach::doSubstituteTiredPlayers()
           t != end;
           ++t )
     {
+        printf("STAMINA CHECK=%f", (*t)->stamina());
         if ( (*t)->recovery() < ServerParam::i().recoverInit() - 0.002 )
         {
             tired_teammate_unum.push_back( (*t)->unum() );

@@ -33,7 +33,6 @@
 #include "strategy.h"
 
 #include "bhv_basic_tackle.h"
-
 #include "basic_actions/basic_actions.h"
 #include "basic_actions/body_go_to_point.h"
 #include "basic_actions/body_intercept.h"
@@ -75,7 +74,6 @@ Bhv_BasicMove::execute( PlayerAgent * agent )
     const int self_min = wm.interceptTable().selfStep();//Quantidade de passos para alacançar a bola
     const int mate_min = wm.interceptTable().teammateStep();//Qtd de passos para o colega mais próximo da bola
     const int opp_min = wm.interceptTable().opponentStep();//Qtd de passos para o oponente mais próximo da bola
-     
     if ( ! wm.kickableTeammate()//Se não existe um jogador para receber um passe (eu acho)
          && ( self_min <= 3
               || ( self_min <= mate_min
@@ -151,3 +149,14 @@ Bhv_BasicMove::execute( PlayerAgent * agent )
 
     return true;
 }
+/* falar sobre minhas alterações até agora
+
+o padrão era vel e a gente colocou stm 
+tudo que eu percebi vai pra seç de result 
+
+tanilsto - sorteio por velocidade 
+
+ele quer uma relaçaõ do id por jogadorn em campo - id tal era centro avante numa ordem mas virou lateral em outra
+ele quer um resultado de analise pra ver que expulsar um jogador pode ser ruim aka n é um bom jeito de escolher os jogadores
+coloca a tabela com as caracteristicas
+*/
