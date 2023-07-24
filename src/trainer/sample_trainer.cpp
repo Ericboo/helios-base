@@ -70,6 +70,7 @@ bool
 SampleTrainer::initImpl( CmdLineParser & cmd_parser )
 {
     bool result = TrainerAgent::initImpl( cmd_parser );
+    printf("%ld", world().time().cycle());
 
 #if 0
     ParamMap my_params;

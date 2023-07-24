@@ -430,7 +430,7 @@ Copyright (C) 2021 Free Software Foundation, Inc.
 This config.status script is free software; the Free Software Foundation
 gives unlimited permission to copy, distribute and modify it."
 
-ac_pwd='/home/eric/Downloads/players/tcc/helios-base'
+ac_pwd='/home/eric/tcc/times/ibots'
 srcdir='.'
 INSTALL='/usr/bin/install -c'
 MKDIR_P='/usr/bin/mkdir -p'
@@ -674,12 +674,12 @@ S["mkdir_p"]="$(MKDIR_P)"
 S["MKDIR_P"]="/usr/bin/mkdir -p"
 S["INSTALL_STRIP_PROGRAM"]="$(install_sh) -c -s"
 S["STRIP"]=""
-S["install_sh"]="${SHELL} /home/eric/Downloads/players/tcc/helios-base/config/install-sh"
-S["MAKEINFO"]="${SHELL} '/home/eric/Downloads/players/tcc/helios-base/config/missing' makeinfo"
-S["AUTOHEADER"]="${SHELL} '/home/eric/Downloads/players/tcc/helios-base/config/missing' autoheader"
-S["AUTOMAKE"]="${SHELL} '/home/eric/Downloads/players/tcc/helios-base/config/missing' automake-1.16"
-S["AUTOCONF"]="${SHELL} '/home/eric/Downloads/players/tcc/helios-base/config/missing' autoconf"
-S["ACLOCAL"]="${SHELL} '/home/eric/Downloads/players/tcc/helios-base/config/missing' aclocal-1.16"
+S["install_sh"]="${SHELL} /home/eric/tcc/times/ibots/config/install-sh"
+S["MAKEINFO"]="${SHELL} '/home/eric/tcc/times/ibots/config/missing' makeinfo"
+S["AUTOHEADER"]="${SHELL} '/home/eric/tcc/times/ibots/config/missing' autoheader"
+S["AUTOMAKE"]="${SHELL} '/home/eric/tcc/times/ibots/config/missing' automake-1.16"
+S["AUTOCONF"]="${SHELL} '/home/eric/tcc/times/ibots/config/missing' autoconf"
+S["ACLOCAL"]="${SHELL} '/home/eric/tcc/times/ibots/config/missing' aclocal-1.16"
 S["VERSION"]="2023.03"
 S["PACKAGE"]="helios-base"
 S["CYGPATH_W"]="echo"

@@ -197,10 +197,49 @@ SampleCoach::initImpl( CmdLineParser & cmd_parser )
 /*!
 
 */
+static bool firstTime3000 = true;
+static bool firstTime6000 = true;
 void
 SampleCoach::actionImpl()
 {
     debugClient().addMessage( "Cycle=%ld", world().time().cycle() );
+
+    if (world().time().cycle() > 2950 || world().time().cycle() > 5950 || 1==1) {
+		int iteration = 1;
+        std::stringstream ss;
+        ss << "/home/eric/tcc/result" << iteration << ".txt";
+        std::string filePath = ss.str();
+
+        FILE* file = fopen(filePath.c_str(), "at");
+        if (file == nullptr) {
+            std::cout << "Erro ao abrir o arquivo." << std::endl;
+            return;
+        }
+
+        // Escrever conteúdo no arquivo
+        for (int playernum = 0; playernum < 12; playernum++) {
+            const rcsc::CoachPlayerObject* player = world().teammate(playernum);
+            if (player == NULL) {
+                printf("PLAYER NULL ERROR ON UNIFORM %d", playernum);
+                continue;
+            }
+            double stamina = player->stamina();
+            //fseek(file, 0, SEEK_END);
+
+            if ((firstTime3000 && world().time().cycle() <= 3000) || (firstTime6000 && world().time().cycle() <= 6000)) {
+                fprintf(file, "%f\n", stamina);
+                if (world().time().cycle() <= 3000 && playernum == 11) {
+                    firstTime3000 = false;
+                }
+                if (world().time().cycle() <= 6000 && playernum == 11) {
+                    firstTime6000 = false;
+                }
+            }
+        }
+
+        // Fechar o arquivo
+        fclose(file);
+    }
 
     if ( world().time().cycle() == 0
          && config().useTeamGraphic()
@@ -398,7 +437,6 @@ SampleCoach::doFirstSubstitute()
                 break;
             }
         }
-
         if ( it != candidates.end() )
         {
             candidates.erase( it );
@@ -476,7 +514,6 @@ SampleCoach::doSubstituteTiredPlayers()
           t != end;
           ++t )
     {
-        printf("STAMINA CHECK=%f", (*t)->stamina());
         if ( (*t)->recovery() < ServerParam::i().recoverInit() - 0.002 )
         {
             tired_teammate_unum.push_back( (*t)->unum() );
