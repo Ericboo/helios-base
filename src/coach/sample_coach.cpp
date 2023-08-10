@@ -204,8 +204,8 @@ SampleCoach::actionImpl()
 {
     debugClient().addMessage( "Cycle=%ld", world().time().cycle() );
 
-    if (world().time().cycle() > 2950 || world().time().cycle() > 5950 || 1==1) {
-		int iteration = 1;
+    if (world().time().cycle() > 2950 || world().time().cycle() > 5950) {
+		int iteration = 31;
         std::stringstream ss;
         ss << "/home/eric/tcc/result" << iteration << ".txt";
         std::string filePath = ss.str();
@@ -226,12 +226,12 @@ SampleCoach::actionImpl()
             double stamina = player->stamina();
             //fseek(file, 0, SEEK_END);
 
-            if ((firstTime3000 && world().time().cycle() <= 3000) || (firstTime6000 && world().time().cycle() <= 6000)) {
-                fprintf(file, "%f\n", stamina);
+            if ((firstTime3000 && world().time().cycle() <= 3000) || (firstTime6000 && world().time().cycle() >= 6000)) {
+                fprintf(file, "%d = %f\n", playernum, stamina);
                 if (world().time().cycle() <= 3000 && playernum == 11) {
                     firstTime3000 = false;
                 }
-                if (world().time().cycle() <= 6000 && playernum == 11) {
+                if (world().time().cycle() >= 6000 && playernum == 11) {
                     firstTime6000 = false;
                 }
             }
