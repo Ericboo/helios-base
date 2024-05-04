@@ -33,6 +33,7 @@
 #include "strategy.h"
 
 #include "bhv_basic_tackle.h"
+
 #include "basic_actions/basic_actions.h"
 #include "basic_actions/body_go_to_point.h"
 #include "basic_actions/body_intercept.h"
@@ -57,7 +58,6 @@ using namespace rcsc;
 bool
 Bhv_BasicMove::execute( PlayerAgent * agent )
 {
-    
     dlog.addText( Logger::TEAM,
                   __FILE__": Bhv_BasicMove" );
 
@@ -71,22 +71,23 @@ Bhv_BasicMove::execute( PlayerAgent * agent )
     const WorldModel & wm = agent->world();
     /*--------------------------------------------------------*/
     // chase ball
-    const int self_min = wm.interceptTable().selfStep();//Quantidade de passos para alacançar a bola
-    const int mate_min = wm.interceptTable().teammateStep();//Qtd de passos para o colega mais próximo da bola
-    const int opp_min = wm.interceptTable().opponentStep();//Qtd de passos para o oponente mais próximo da bola
-    if ( ! wm.kickableTeammate()//Se não existe um jogador para receber um passe (eu acho)
+    const int self_min = wm.interceptTable().selfStep();
+    const int mate_min = wm.interceptTable().teammateStep();
+    const int opp_min = wm.interceptTable().opponentStep();
+
+    if ( ! wm.kickableTeammate()
          && ( self_min <= 3
               || ( self_min <= mate_min
                    && self_min < opp_min + 3 )
               )
          )
-    {//Intercepta a bola se eu estiver <= 3 passos ou não tiver um oponente com + de 3 passos de proximidade (pra mim faltam 5 pra ele faltam 2) e não tem um colega mais próximo que eu
+    {
         dlog.addText( Logger::TEAM,
                       __FILE__": intercept" );
         Body_Intercept().execute( agent );
         agent->setNeckAction( new Neck_OffensiveInterceptNeck() );
 
-        return true;//Finaliza a execução para quando é possível interceptar a bola
+        return true;
     }
 
     const Vector2D target_point = Strategy::i().getPosition( wm.self().unum() );
@@ -114,49 +115,11 @@ Bhv_BasicMove::execute( PlayerAgent * agent )
          && wm.ball().distFromSelf() < 18.0 )
     {
         agent->setNeckAction( new Neck_TurnToBall() );
-        
     }
     else
     {
         agent->setNeckAction( new Neck_TurnToBallOrScan( 0 ) );
-        return true;
-    }
-
-    const PlayerObject *nearest_opp;
-
-    const Vector2D nearest_opp_pos = (nearest_opp ? nearest_opp->pos() : Vector2D(-1000, 0));
-
-    const double nearest_opp_dist = (nearest_opp ? nearest_opp->distFromSelf() : 1000);
-
-    const double closest_teammate_dist = (wm.getDistTeammateNearestTo(nearest_opp_pos, 0));
-
-    if(nearest_opp_dist < 5.0 && nearest_opp_dist < closest_teammate_dist) {
-        if (wm.kickableOpponent() == nearest_opp) {
-            Vector2D final_point = nearest_opp_pos;
-            agent->debugClient().setTarget(final_point);
-            
-            dlog.addText( Logger::INTERCEPT,
-                      __FILE__": no solution... Just go to ball end point (%.2f %.2f)",
-                      final_point.x, final_point.y );
-            agent->debugClient().addMessage( "InterceptNoSolution" );
-            Body_GoToPoint( final_point,
-                            2.0,
-                            ServerParam::i().maxDashPower()
-                            ).execute( agent );
-            return true;
-        }
     }
 
     return true;
 }
-/* falar sobre minhas alterações até agora
-
-o padrão era vel e a gente colocou stm 
-tudo que eu percebi vai pra seç de result 
-
-tanilsto - sorteio por velocidade 
-
-ele quer uma relaçaõ do id por jogadorn em campo - id tal era centro avante numa ordem mas virou lateral em outra
-ele quer um resultado de analise pra ver que expulsar um jogador pode ser ruim aka n é um bom jeito de escolher os jogadores
-coloca a tabela com as caracteristicas
-*/

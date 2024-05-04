@@ -29,7 +29,7 @@
 #endif
 
 #include "sample_coach.h"
-
+#include "sample_q.cpp"
 #include "sample_freeform_message.h"
 
 #include <rcsc/coach/coach_command.h>
@@ -53,11 +53,24 @@
 #include <sstream>
 #include <iostream>
 #include <functional>
+#include <random>
 
 #include "team_logo.xpm"
 
 using namespace rcsc;
 
+struct KickAreaCmp
+    : public std::binary_function< const PlayerType *,
+                                   const PlayerType *,
+                                   bool > {
+
+    result_type operator()( first_argument_type lhs,
+                            second_argument_type rhs ) const
+      {
+          return lhs->kickableArea() > rhs->kickableArea(); //karea = kmargin + playersize + ballsize
+      }
+
+};
 
 struct RealSpeedMaxCmp
     : public std::binary_function< const PlayerType *,
@@ -205,7 +218,7 @@ SampleCoach::actionImpl()
     debugClient().addMessage( "Cycle=%ld", world().time().cycle() );
 
     if (world().time().cycle() > 2950 || world().time().cycle() > 5950) {
-		int iteration = 31;
+		int iteration = 164;
         std::stringstream ss;
         ss << "/home/eric/tcc/result" << iteration << ".txt";
         std::string filePath = ss.str();
@@ -443,31 +456,78 @@ SampleCoach::doFirstSubstitute()
         }
     }
 
-    //
+    //IBOTS - inicializa matriz q.
+    std::vector<std::vector<int>> q_matrix = initialize_table();
+    //IBOTS - inicializa esplon para exploração
+    int epsilon = 3;
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::uniform_int_distribution<int> dis(0, 9); // Distribuição uniforme de inteiros de 0 a 9
+    int index = 0;
+    
+    for (const auto &action : q_matrix) {
+        
+        int rand = dis(gen);
+        int max = findIndexOfMax(action); //Acha a característica de maior valor na matriz
+        int type = -1;
+
+        if(rand > epsilon) {//Escolhe com base na política, o maior valor recompensado na matriz.
+            
+            if (max == 0) {
+                type = getFastestType(candidates);
+            } else if (max == 1) {
+                type = getBiggestKickableArea(candidates);
+            }
+
+        } else { //Escolhe por exploração. Aleatoriamente, mas nunca o maior recompensado da matriz.
+
+            std::uniform_int_distribution<int> action_list(0, action.size() -1);
+            int chosen = max;
+            while(chosen == max) {
+                chosen = action_list(gen);
+            }
+            if (chosen == 0) {
+                type = getFastestType(candidates);
+            } else if (chosen == 1) {
+                type = getBiggestKickableArea(candidates);
+            } 
+
+        }
+
+        if ( type != Hetero_Unknown ) {
+            substituteTo(ordered_unum[index], type);
+        }
+
+        index += 1;
+
+    }
+
+    // IBOTS - DESATIVADO PARA PREFERIR MATRIZ Q
     // change field players
     //
-	const std::vector<int> ids = {7, 16, 17, 13, 1, 2, 14, 10, 3, 9, 12, 8, 4, 11, 15, 6, 5};
-    int count = 0;
-    for ( std::vector< int >::iterator unum = ordered_unum.begin();
-          unum != ordered_unum.end();
-          ++unum )
-    {
-        const CoachPlayerObject * p = world().teammate( *unum );
-        if ( ! p )
-        {
-            std::cerr << config().teamName() << " coach: "
-                      << " teammate " << *unum << " does not exist."
-                      << " skip first substitution." << std::endl;
-            dlog.addText( Logger::TEAM,
-                          __FILE__": teammate %d does not exist. skip first substitution.",
-                          *unum );
-            continue;
-        }
- 
-        substituteTo( *unum, ids[count] );
-        count++;
-    
-    }
+    // for ( std::vector< int >::iterator unum = ordered_unum.begin();
+    //       unum != ordered_unum.end();
+    //       ++unum )
+    // {
+    //     const CoachPlayerObject * p = world().teammate( *unum );
+    //     if ( ! p )
+    //     {
+    //         std::cerr << config().teamName() << " coach: "
+    //                   << " teammate " << *unum << " does not exist."
+    //                   << " skip first substitution." << std::endl;
+    //         dlog.addText( Logger::TEAM,
+    //                       __FILE__": teammate %d does not exist. skip first substitution.",
+    //                       *unum );
+    //         continue;
+    //     }
+        
+    //     int type = getFastestType( candidates );
+    //     if ( type != Hetero_Unknown )
+    //     {
+    //         substituteTo( *unum, type );
+    //     }
+        
+    // }
 }
 
 /*-------------------------------------------------------------------*/
@@ -669,6 +729,30 @@ SampleCoach::getFastestType( PlayerTypePtrCont & candidates )
             }
         }
     }
+
+    if ( best_type != candidates.end() )
+    {
+        int id = (*best_type)->id();
+        candidates.erase( best_type );
+        return id;
+    }
+
+    return Hetero_Unknown;
+}
+
+int SampleCoach::getBiggestKickableArea( PlayerTypePtrCont & candidates )
+{
+    if ( candidates.empty() )
+    {
+        return Hetero_Unknown;
+    }
+
+    // sort by karea
+    std::sort( candidates.begin(),
+               candidates.end(),
+               KickAreaCmp() );
+
+    PlayerTypePtrCont::iterator best_type = candidates.begin();
 
     if ( best_type != candidates.end() )
     {

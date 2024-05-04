@@ -90,6 +90,7 @@ private:
                        const int type );
 
     int getFastestType( PlayerTypePtrCont & candidates );
+    int getBiggestKickableArea( PlayerTypePtrCont & candidates );
 
     void sayPlayerTypes();
 

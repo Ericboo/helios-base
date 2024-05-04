@@ -240,8 +240,11 @@ sample_coach-sample_coach.o: sample_coach.cpp /usr/include/stdc-predef.h \
  /usr/local/include/rcsc/common/soccer_agent.h \
  /usr/local/include/rcsc/common/team_graphic.h /usr/include/c++/11/set \
  /usr/include/c++/11/bits/stl_set.h \
- /usr/include/c++/11/bits/stl_multiset.h sample_freeform_message.h \
- /usr/local/include/rcsc/coach/coach_command.h \
+ /usr/include/c++/11/bits/stl_multiset.h sample_q.cpp \
+ /usr/include/string.h /usr/include/strings.h \
+ /usr/include/x86_64-linux-gnu/bits/strings_fortified.h \
+ /usr/include/x86_64-linux-gnu/bits/string_fortified.h \
+ sample_freeform_message.h /usr/local/include/rcsc/coach/coach_command.h \
  /usr/local/include/rcsc/common/abstract_client.h \
  /usr/local/include/rcsc/common/logger.h \
  /usr/local/include/rcsc/geom/sector_2d.h \
@@ -476,10 +479,7 @@ sample_coach-sample_coach.o: sample_coach.cpp /usr/include/stdc-predef.h \
  /usr/include/boost/range/end.hpp \
  /usr/include/boost/range/detail/implementation_help.hpp \
  /usr/include/boost/range/detail/common.hpp \
- /usr/include/boost/range/detail/sfinae.hpp /usr/include/string.h \
- /usr/include/strings.h \
- /usr/include/x86_64-linux-gnu/bits/strings_fortified.h \
- /usr/include/x86_64-linux-gnu/bits/string_fortified.h \
+ /usr/include/boost/range/detail/sfinae.hpp \
  /usr/include/boost/range/size.hpp /usr/include/boost/range/size_type.hpp \
  /usr/include/boost/range/difference_type.hpp \
  /usr/include/boost/range/has_range_iterator.hpp \
@@ -788,7 +788,12 @@ sample_coach-sample_coach.o: sample_coach.cpp /usr/include/stdc-predef.h \
  /usr/include/boost/integer.hpp /usr/include/boost/integer_fwd.hpp \
  /usr/include/boost/detail/basic_pointerbuf.hpp \
  /usr/local/include/rcsc/param/cmd_line_parser.h \
- /usr/local/include/rcsc/param/param_parser.h ../../src/team_logo.xpm
+ /usr/local/include/rcsc/param/param_parser.h /usr/include/c++/11/random \
+ /usr/include/c++/11/bits/random.h \
+ /usr/include/x86_64-linux-gnu/c++/11/bits/opt_random.h \
+ /usr/include/c++/11/bits/random.tcc /usr/include/c++/11/numeric \
+ /usr/include/c++/11/bits/stl_numeric.h \
+ /usr/include/c++/11/pstl/glue_numeric_defs.h ../../src/team_logo.xpm
 /usr/include/stdc-predef.h:
 ../../config.h:
 sample_coach.h:
@@ -1086,6 +1091,11 @@ sample_coach.h:
 /usr/include/c++/11/set:
 /usr/include/c++/11/bits/stl_set.h:
 /usr/include/c++/11/bits/stl_multiset.h:
+sample_q.cpp:
+/usr/include/string.h:
+/usr/include/strings.h:
+/usr/include/x86_64-linux-gnu/bits/strings_fortified.h:
+/usr/include/x86_64-linux-gnu/bits/string_fortified.h:
 sample_freeform_message.h:
 /usr/local/include/rcsc/coach/coach_command.h:
 /usr/local/include/rcsc/common/abstract_client.h:
@@ -1344,10 +1354,6 @@ sample_freeform_message.h:
 /usr/include/boost/range/detail/implementation_help.hpp:
 /usr/include/boost/range/detail/common.hpp:
 /usr/include/boost/range/detail/sfinae.hpp:
-/usr/include/string.h:
-/usr/include/strings.h:
-/usr/include/x86_64-linux-gnu/bits/strings_fortified.h:
-/usr/include/x86_64-linux-gnu/bits/string_fortified.h:
 /usr/include/boost/range/size.hpp:
 /usr/include/boost/range/size_type.hpp:
 /usr/include/boost/range/difference_type.hpp:
@@ -1686,4 +1692,11 @@ sample_freeform_message.h:
 /usr/include/boost/detail/basic_pointerbuf.hpp:
 /usr/local/include/rcsc/param/cmd_line_parser.h:
 /usr/local/include/rcsc/param/param_parser.h:
+/usr/include/c++/11/random:
+/usr/include/c++/11/bits/random.h:
+/usr/include/x86_64-linux-gnu/c++/11/bits/opt_random.h:
+/usr/include/c++/11/bits/random.tcc:
+/usr/include/c++/11/numeric:
+/usr/include/c++/11/bits/stl_numeric.h:
+/usr/include/c++/11/pstl/glue_numeric_defs.h:
 ../../src/team_logo.xpm:
